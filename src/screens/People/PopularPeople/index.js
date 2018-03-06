@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Text, StyleSheet } from 'react-native'
+import {Text, StyleSheet, View, ActivityIndicator} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ImageButton, Container, PeopleCard } from 'components'
@@ -19,50 +19,72 @@ class PopularPeople extends Component {
   }
 
   componentWillMount() {
-    this._retrievePeoples();
+    this._retrievePeoples(1);
   }
 
-  _retrievePeoples() {
-    this.props.actions.retrievePopularPeople();
+  _retrievePeoples(page) {
+    this.props.actions.retrievePopularPeople(page)
+  }
+
+  _getNextPage(currentPage){
+    console.log("Next Clicked")
+    this._retrievePeoples(currentPage + 1)
+  }
+
+  _getPreviousPage(currentPage){
+    console.log("Next Clicked")
+    this._retrievePeoples(currentPage - 1)
   }
 
   render() {
+    let {page, results, total_pages} = this.props.popularPeople
+
     const isLoading = Object.getOwnPropertyNames(this.props.popularPeople).length === 0
+
     let content = null
 
     if(!isLoading){
       content = <GridView style={styles.gridView} 
-          items={this.props.popularPeople.results}
+          items={results}
           renderItem={people => (
             <PeopleCard onPress={console.log(people.name)} people={people}/>
+          )}
+          showsVerticalScrollIndicator={false}
+          renderFooter={() => (
+            <View style={{height: 10}}/>
           )}/>
     } else {
-      content = <Text>Loading</Text>
+      content = <ActivityIndicator style={styles.loading}/>
     }
-
-    console.log(isLoading + " "+content);
 
     return (
       <Container style={styles.parentContainer}>
-        <TopNav title={this.props.popularPeople.page}/>
+        <TopNav 
+          onNextPress={() => this._getNextPage(page)} 
+          onPreviousPress={() => this._getPreviousPage(page)} 
+          page={page} 
+          totalPages={total_pages}
+        />
         {content}
       </Container>
     )
   }
 }
 
-const TopNav = ({title}) => (
+const TopNav = ({onNextPress, onPreviousPress, page, totalPages}) => {
+  return (
   <Container style={styles.topNavContainer} >
-    <ImageButton onPress={console.log("Clicked")} src='backArrow'/>
-    <Text style={{flex: 1, textAlign: 'center'}}>Page {title}</Text>
-    <ImageButton onPress={console.log("Clicked")} src='nextArrow'/>
+    <ImageButton onPress={onPreviousPress} src='backArrow'/>
+    <Text style={{flex: 1, textAlign: 'center'}}>{page}/{totalPages}</Text>
+    <ImageButton onPress={onNextPress} src='nextArrow'/>
   </Container>
-)
+)}
 
 const styles = StyleSheet.create({
   parentContainer: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    overflow: 'visible',
   },
   topNavContainer: {
     flexDirection: 'row',
@@ -71,6 +93,9 @@ const styles = StyleSheet.create({
   gridView: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  loading: {
+    flex: 1,
   }
 })
 

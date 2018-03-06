@@ -9,6 +9,7 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case types.GET_POPULAR_PEOPLE:
+    case types.REMOVE_POPULAR_PEOPLE:
       return {
         ...state,
         popularPeople: action.popularPeople,

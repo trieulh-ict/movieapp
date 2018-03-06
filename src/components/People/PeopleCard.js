@@ -17,9 +17,7 @@ const CardContainer = styled.TouchableOpacity `
 const PeopleCard = ({onPress, people, ...rest}) => (
   <CardContainer style={styles.parentContainer} onPress={onPress} {...rest}>
     <Image style={styles.avatar} source={{uri: abc(people.profile_path)}} />
-    <Container>
-      <Text>{people.name}</Text>
-    </Container>
+    <Text style={styles.name}>{people.name}</Text>
   </CardContainer>
 )
 
@@ -37,7 +35,13 @@ const styles = StyleSheet.create({
   avatar: {
     resizeMode: 'cover',
     width: '100%',
-    height: 100,
+    height: 140,
+  },
+  name: {
+    width: '100%',
+    textAlign: 'center',
+    color: 'white',
+    padding: 10
   }
 })
 
