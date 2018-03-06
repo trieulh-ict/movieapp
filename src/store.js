@@ -1,5 +1,21 @@
-import { createStore } from 'redux'
-import reducer from './reducer'
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import rootReducer from './reducer';
 
+let middleware = [thunk];
 
-export default createStore(reducer)
+if (__DEV__) {
+  const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
+  middleware = [
+    ...middleware,
+    reduxImmutableStateInvariant,
+    logger
+  ];
+} else {
+  middleware = [...middleware];
+}
+
+export default function configureStore(initialState) {
+  return createStore(rootReducer, initialState, applyMiddleware(...middleware));
+}

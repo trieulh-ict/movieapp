@@ -2,19 +2,24 @@ import { Navigation } from 'react-native-navigation'
 import { THEME } from 'config'
 import { HOME_SCREEN } from 'screens/Home/index'
 import { COUNTER_SCREEN } from 'screens/Counter/index'
+import { POPULAR_PEOPLE_SCREEN } from 'screens/People/PopularPeople'
 
 import homeIcoSrc from 'static/images/home.png'
 import CounterIcoSrc from 'static/images/counter.png'
 
 
 const tabs = [{
-  label: 'Home',
+//   label: 'Home',
+//   icon: homeIcoSrc,
+//   ...HOME_SCREEN,
+// }, {
+//   label: 'Redux Counter',
+//   icon: CounterIcoSrc,
+//   ...COUNTER_SCREEN,
+// }, {
+  label: 'Popular People',
   icon: homeIcoSrc,
-  ...HOME_SCREEN,
-}, {
-  label: 'Redux Counter',
-  icon: CounterIcoSrc,
-  ...COUNTER_SCREEN,
+  ...POPULAR_PEOPLE_SCREEN,
 }]
 
 export const startTabBasedApp = () => Navigation.startTabBasedApp({

@@ -5,4 +5,6 @@ export const THEME = {
   primaryLight: '#98ee99',
   primaryDark: '#338a3e',
   textOnPrimary: '#FFFFFF',
+  transparent: '#0000',
+  coalGray: '#333644',
 }
